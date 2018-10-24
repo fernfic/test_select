@@ -33,11 +33,15 @@ $server->wsdl->addComplexType(
 // Register the method to expose
 $server->register('set_data',                    // method name
     array('data' => 'tns:Air_Data'),          // input parameters
-    array('return' => 'xsd:string')    // output parameters
+    array('return' => 'xsd:string'),    // output parameters
+    'urn:air_data',                         // namespace
+    'urn:air_data#set_data'                   // soapaction
 );
 $server->register('get_data',                    // method name
-    array('data' => 'xsd:string'),
-    array('return' => 'tns:Get_Air')    // output parameters
+    array('room' => 'xsd:string'),
+    array('return' => 'tns:Get_Air'),    // output parameters
+    'urn:air_data',                         // namespace
+    'urn:air_data#get_data'                   // soapaction
 );
 
 // Define the method as a PHP function
@@ -55,10 +59,11 @@ function set_data($data) {
     $send = "add data complete!";
     return $send;
 }
-function get_data($data) {
+function get_data($room) {
     $dbcon =  mysqli_connect('localhost', 'wolfbit', '', 'air_data') or die('not connect database'.mysqli_connect_error());
 	mysqli_set_charset($dbcon, 'utf8');
-	$query = "SELECT * FROM data_table WHERE room='$data'";
+// 	$query = "SELECT * FROM data_table WHERE room='$room'";
+	$query = "SELECT * FROM data_table";
     $result = mysqli_query($dbcon, $query);
     
     if($result){

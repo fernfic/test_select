@@ -5,7 +5,7 @@ $us = "urn:air_data";
 
 $server = new soap_server();
 $server->configureWSDL('PowerData', $us);
-$server->wsdl->schemaTargerNamespace->$us;
+$server->wsdl->schemaTargetNamespace->$us;
 $server->soap_defencoding = 'utf-8';
 $server->register("getInfoPower",array("day"=>"xsd:string"),
 				 				array("return"=>"xsd:string"), $us
@@ -18,9 +18,8 @@ if(!isset($HTTP_RAW_POST_DATA)){
 function getInfoPower($day){
     $dbcon =  mysqli_connect('localhost', 'wolfbit', '', 'air_data') or die('not connect database'.mysqli_connect_error());
 	mysqli_set_charset($dbcon, 'utf8');
-    $query = "SELECT * FROM data_table WHERE day='MON'";
+    $query = "SELECT * FROM data_table WHERE day='$day'";
 
-    $xml .= "<?xml version='1.0' encoding='UTF-8'?>";
     // $keep_data = [];
     $result = mysqli_query($dbcon, $query);
 
